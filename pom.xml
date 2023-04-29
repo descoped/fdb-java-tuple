@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.descoped.foundationdb</groupId>
+    <artifactId>fdb-java-tuple</artifactId>
+    <version>6.3.18-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>FoundationDB Tuple API</name>
+    <description>FoundationDB Tuple API</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <module.build.sourceEncoding>UTF-8</module.build.sourceEncoding>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+
+        <slf4j.version>1.7.30</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <junit.version>5.7.1</junit.version>
+        <junit.launcher.version>1.7.1</junit.launcher.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.foundationdb</groupId>
+            <artifactId>fdb-java</artifactId>
+            <version>6.3.18</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <release>${java.version}</release>
+                    <encoding>${module.build.sourceEncoding}</encoding>
+                    <meminitial>64m</meminitial>
+                    <maxmem>512m</maxmem>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>org.foundationdb</artifact>
+                                    <includes>
+                                        <include>com/apple/foundationdb/*Transaction*</include>
+                                        <include>com/apple/foundationdb/tuple/**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
