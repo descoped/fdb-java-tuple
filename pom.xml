@@ -14,7 +14,7 @@
     <description>FoundationDB Tuple API</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <module.build.sourceEncoding>UTF-8</module.build.sourceEncoding>
         <maven.javadoc.skip>true</maven.javadoc.skip>
 

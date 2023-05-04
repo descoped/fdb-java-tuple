@@ -1,13 +1,8 @@
 package io.descoped.apple.foundationdb.tuple;
 
-import io.descoped.apple.foundationdb.Range;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 //import com.apple.foundationdb.Database;
 //import com.apple.foundationdb.FDB;
@@ -24,32 +19,11 @@ public class TupleTest {
         runTests(reps);
     }
 
-    public static List<Integer> bytesToIntList(byte[] bytes) {
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        return IntStream.generate(buffer::get).limit(buffer.remaining()).boxed().collect(Collectors.toList());
-    }
-
     // Assumes API version < 520
     private static void incompleteVersionstamps300() {
 //        if (FDB.instance().getAPIVersion() >= 520) {
 //            throw new IllegalStateException("cannot run test with API version " + FDB.instance().getAPIVersion());
 //        }
-
-        {
-            Tuple t1 = Tuple.from("a", "bb", 9, "c");
-            byte[] p1 = t1.pack();
-
-            System.out.printf("%s%n", ByteArrayUtil.printable(p1));
-
-            System.out.printf("%s -> %s%n", bytesToIntList(p1), new String(p1));
-
-            Range r1 = t1.range(Tuple.from("d").pack());
-            System.out.printf("=> %s%n", bytesToIntList(r1.begin));
-            System.out.printf("=> %s%n", bytesToIntList(r1.end));
-            System.out.printf("%s => %s%n", ByteArrayUtil.printable(r1.begin), ByteArrayUtil.printable(r1.end));
-        }
-
-        if (true) return;
 
         Tuple t1 = Tuple.from(Versionstamp.complete(new byte[]{FF, FF, FF, FF, FF, FF, FF, FF, FF, FF}), new byte[]{});
         Tuple t2 = Tuple.from(Versionstamp.incomplete());
